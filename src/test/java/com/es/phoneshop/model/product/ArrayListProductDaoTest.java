@@ -6,7 +6,7 @@ import java.math.*;
 import java.util.*;
 
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ArrayListProductDaoTest
 {
@@ -19,24 +19,26 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProductsNoResults() {
-        assertTrue(!productDao.findProducts().isEmpty());
+        assertFalse(productDao.findProducts().isEmpty());
     }
     
     @Test
     public void testGetProduct(){
-        assertTrue(productDao.getProduct(4L)!=null);
+        assertNotNull(productDao.getProduct(4L));
     }
     
     @Test
     public void testSaveProduct(){
-        Product prod = new Product(14L, "nokia111", "Nokia 355", new BigDecimal(50), Currency.getInstance("USD"), 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg" );
-        productDao.save(prod);
-        assertTrue(productDao.getProduct(prod.getId())!=null);
+        Product productTest = new Product(14L, "nokia111", "Nokia 355", new BigDecimal(50), Currency.getInstance("USD"), 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg" );
+        productDao.save(productTest);
+        productDao.save(productTest);
+        assertNotNull(productDao.getProduct(productTest.getId()));
     }
     
     @Test
     public void testDeleteProduct(){
+        ProductDao ExpectedProduct = new ArrayListProductDao();
         productDao.delete(10L);
-        assertTrue(productDao.getProd(10L)==false);
+        assertNotEquals("Equals",ExpectedProduct, productDao);
     }
 }

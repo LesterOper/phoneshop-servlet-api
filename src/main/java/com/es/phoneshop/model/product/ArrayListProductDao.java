@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.Objects;
+
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -30,38 +30,40 @@ public class ArrayListProductDao implements ProductDao {
     }
     @Override
     public Product getProduct(Long id) {
-        return result.stream().filter(x-> x.getId()==id).findFirst().get();
-    }
-    
-    @Override
-    public boolean getProd(Long id){
-        return result.stream().anyMatch(x->x.getId()==id);
+        result.stream().filter(x-> x.getId().equals(id)).findFirst().
+                orElseThrow(NullPointerException::new);
+        
+        return result.stream().
+                filter(x-> x.getId().equals(id)).
+                findFirst().get();
     }
     
     @Override
     public List<Product> findProducts() {
-        List<Product> list = result.stream().filter(x-> x.getPrice()!=null && x.getStock()>0).collect(Collectors.toCollection(ArrayList::new));
+        List<Product> list = result.stream().
+                filter(x-> x.getPrice()!=null && x.getStock()>0).
+                collect(Collectors.toCollection(ArrayList::new));
         return list;
     }
 
     @Override
     public void save(Product product) {
-        if(this.result.stream().anyMatch(x-> x.getId()==product.getId())){
-            throw new IllegalArgumentException("Object's id isn't unic");
+        if(this.result.stream().anyMatch(x-> x.getId().equals(product.getId()))){
+            
+            this.result.stream().
+                filter(x-> x.getId().equals(product.getId())).
+                    findFirst().map(x-> this.result.set(this.result.indexOf(x), product));
         }
         else{
             this.result.add(product);
         }
+        
     }
 
     @Override
     public void delete(Long id) {
-        if(this.result.stream().anyMatch(x->x.getId() == id)){
-            int index = id.intValue()-1;
-            result.remove(result.get(index));
-        }
-        else{
-            throw new IllegalArgumentException("Such object doesn't exsist");
-        }
+        result.stream().filter(x->x.getId().equals(id)).
+                findFirst().map(x->result.remove(id.intValue()-1)).
+                orElseThrow(NullPointerException::new);
     }
 }
