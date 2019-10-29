@@ -28,7 +28,7 @@ public class ArrayListProductDaoTest
     }
     
     @Test
-    public void testSaveProduct(){
+    public synchronized void testSaveProduct(){
         Product productTest = new Product(14L, "nokia111", "Nokia 355", new BigDecimal(50), Currency.getInstance("USD"), 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg" );
         productDao.save(productTest);
         productDao.save(productTest);
@@ -36,7 +36,7 @@ public class ArrayListProductDaoTest
     }
     
     @Test
-    public void testDeleteProduct(){
+    public synchronized void testDeleteProduct(){
         ProductDao ExpectedProduct = new ArrayListProductDao();
         productDao.delete(10L);
         assertNotEquals("Equals",ExpectedProduct, productDao);

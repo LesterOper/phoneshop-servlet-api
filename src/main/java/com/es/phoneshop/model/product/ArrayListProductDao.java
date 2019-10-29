@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
@@ -26,16 +25,13 @@ public class ArrayListProductDao implements ProductDao {
         result.add(new Product(11L, "simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
         result.add(new Product(12L, "simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
         result.add(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
-
     }
     @Override
     public Product getProduct(Long id) {
-        result.stream().filter(x-> x.getId().equals(id)).findFirst().
-                orElseThrow(NullPointerException::new);
-        
         return result.stream().
                 filter(x-> x.getId().equals(id)).
-                findFirst().get();
+                findFirst().
+                orElseThrow(IllegalArgumentException::new);
     }
     
     @Override
@@ -47,23 +43,23 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public void save(Product product) {
+    public synchronized void save(Product product) {
         if(this.result.stream().anyMatch(x-> x.getId().equals(product.getId()))){
-            
             this.result.stream().
                 filter(x-> x.getId().equals(product.getId())).
-                    findFirst().map(x-> this.result.set(this.result.indexOf(x), product));
+                    findFirst().
+                    map(x-> this.result.set(this.result.indexOf(x), product));
         }
         else{
             this.result.add(product);
         }
-        
     }
 
     @Override
-    public void delete(Long id) {
+    public synchronized void delete(Long id) {
         result.stream().filter(x->x.getId().equals(id)).
-                findFirst().map(x->result.remove(id.intValue()-1)).
+                findFirst().
+                map(x->result.remove(id.intValue()-1)).
                 orElseThrow(NullPointerException::new);
     }
 }
