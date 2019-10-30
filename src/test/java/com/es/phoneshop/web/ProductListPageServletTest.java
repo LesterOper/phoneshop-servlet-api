@@ -35,7 +35,12 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         servlet.doGet(request, response);
-
         verify(requestDispatcher).forward(request, response);
+    }
+    
+    @Test
+    public void testDoGetSetAttribute() throws ServletException, IOException{
+        servlet.doGet(request, response);
+        verify(request).setAttribute("products",ProductListPageServlet.product.findProducts());
     }
 }
