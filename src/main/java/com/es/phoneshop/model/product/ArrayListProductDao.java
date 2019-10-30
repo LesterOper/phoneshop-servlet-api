@@ -36,19 +36,15 @@ public class ArrayListProductDao implements ProductDao {
     
     @Override
     public List<Product> findProducts() {
-        List<Product> list = result.stream().
+        return result.stream().
                 filter(x-> x.getPrice()!=null && x.getStock()>0).
                 collect(Collectors.toCollection(ArrayList::new));
-        return list;
     }
 
     @Override
     public synchronized void save(Product product) {
         if(this.result.stream().anyMatch(x-> x.getId().equals(product.getId()))){
-            this.result.stream().
-                filter(x-> x.getId().equals(product.getId())).
-                    findFirst().
-                    map(x-> this.result.set(this.result.indexOf(x), product));
+            throw new IllegalArgumentException();
         }
         else{
             this.result.add(product);

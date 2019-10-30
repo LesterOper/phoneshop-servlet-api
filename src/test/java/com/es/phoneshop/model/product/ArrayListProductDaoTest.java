@@ -27,7 +27,7 @@ public class ArrayListProductDaoTest
         assertNotNull(productDao.getProduct(4L));
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public synchronized void testSaveProduct(){
         Product productTest = new Product(14L, "nokia111", "Nokia 355", new BigDecimal(50), Currency.getInstance("USD"), 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg" );
         productDao.save(productTest);
