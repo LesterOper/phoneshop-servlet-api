@@ -12,10 +12,8 @@ public class ProductListPageServlet extends HttpServlet {
     
     public static ProductDao product;
     
-
     public ProductListPageServlet() {
         this.product = ArrayListProductDao.getInstance();
-        
     }
     
     @Override
@@ -31,7 +29,6 @@ public class ProductListPageServlet extends HttpServlet {
                 price = SortPrice.valueOf(board);
             }
         }
-        
         request.setAttribute("products",product.findProducts(request.getParameter("query"), field, price));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }

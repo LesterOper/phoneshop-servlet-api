@@ -1,16 +1,27 @@
 package com.es.phoneshop.model.product;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
-    //public static List<Product> result;
-    public static List<Product> result;
+   
+    private List<Product> result;
     private static ProductDao instance = new ArrayListProductDao();
+    
+    
+    
+    private ArrayListProductDao(){
+        this.result = new ArrayList<>();
+    }
+    
+    public static ProductDao getInstance(){
+        if(instance == null){
+            instance = new ArrayListProductDao();
+        }
+        return  instance;
+    }
     
     public Comparator<Product> getComparator(SortField field, SortPrice price){
         if(field.equals(SortField.no) && price.equals(SortPrice.no)){
@@ -31,16 +42,6 @@ public class ArrayListProductDao implements ProductDao {
         }
     }
     
-    private ArrayListProductDao(){
-        this.result = new ArrayList<>();
-    }
-    
-    public static ProductDao getInstance(){
-        if(instance == null){
-            instance = new ArrayListProductDao();
-        }
-        return  instance;
-    }
     @Override
     public Product getProduct(Long id) {
         return result.stream().
