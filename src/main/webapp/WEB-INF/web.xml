@@ -5,6 +5,8 @@
          version="3.1">
   <display-name>Phoneshop servlet api training</display-name>
 
+  
+
   <servlet>
     <servlet-name>productList</servlet-name>
     <servlet-class>com.es.phoneshop.web.ProductListPageServlet</servlet-class>
@@ -13,6 +15,22 @@
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
     <url-pattern>/products</url-pattern>
+  </servlet-mapping>
+  
+  <listener>
+      <listener-class>
+          com.es.phoneshop.listener.ProductContextListener
+      </listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>productDetails</servlet-name>
+    <servlet-class>com.es.phoneshop.web.ProductDetailsServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>productDetails</servlet-name>
+    <url-pattern>/products/description</url-pattern>
   </servlet-mapping>
 
 </web-app>

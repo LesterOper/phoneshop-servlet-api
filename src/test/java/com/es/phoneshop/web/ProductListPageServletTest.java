@@ -1,5 +1,7 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.product.SortField;
+import com.es.phoneshop.model.product.SortPrice;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +43,6 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGetSetAttribute() throws ServletException, IOException{
         servlet.doGet(request, response);
-        verify(request).setAttribute("products",ProductListPageServlet.product.findProducts());
+        verify(request).setAttribute("products",ProductListPageServlet.product.findProducts(request.getParameter("query"), SortField.no, SortPrice.no));
     }
 }

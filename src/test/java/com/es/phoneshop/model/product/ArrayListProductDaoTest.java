@@ -14,17 +14,17 @@ public class ArrayListProductDaoTest
     
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.getInstance();
     }
 
     @Test
     public void testFindProductsNoResults() {
-        assertFalse(productDao.findProducts().isEmpty());
+        assertFalse(productDao.findProducts("", SortField.asc, SortPrice.desc).isEmpty());
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testGetProduct(){
-        assertNotNull(productDao.getProduct(4L));
+        assertNotNull(productDao.getProduct(1L));
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -37,8 +37,8 @@ public class ArrayListProductDaoTest
     
     @Test
     public synchronized void testDeleteProduct(){
-        ProductDao ExpectedProduct = new ArrayListProductDao();
-        productDao.delete(10L);
-        assertNotEquals("Equals",ExpectedProduct, productDao);
+        ProductDao ExpectedProduct = ArrayListProductDao.getInstance();
+        productDao.delete(1L);
+        assertEquals("Equals",ExpectedProduct, productDao);
     }
 }
