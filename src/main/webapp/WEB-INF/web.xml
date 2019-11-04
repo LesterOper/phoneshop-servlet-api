@@ -32,5 +32,15 @@
     <servlet-name>productDetails</servlet-name>
     <url-pattern>/products/description</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>popup</servlet-name>
+    <servlet-class>com.es.phoneshop.web.PopupServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>popup</servlet-name>
+    <url-pattern>/products/popup</url-pattern>
+  </servlet-mapping>
 
 </web-app>

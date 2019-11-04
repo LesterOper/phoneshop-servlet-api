@@ -16,11 +16,21 @@
     <thead>
       <tr>
         <td>Image</td>
-        <td class ="description">Description <a href ="products?sort=description&Board=asc&query =${param.query}">asc</a>
-            <a href ="products?sort=description&Board=desc&query =${param.query}">desc</a> 
+        <td class ="description">Description 
+            <a 
+                href ="products?sort=description&Board=asc&query =${param.query}">asc
+            </a>
+            <a 
+                href ="products?sort=description&Board=desc&query =${param.query}">desc
+            </a> 
         </td>
-        <td class="price">Price <a href = "products?sort=price&Board=asc&query =${param.query}">asc</a>
-            <a href = "products?sort=price&Board=desc&query =${param.query}">desc</a>
+        <td class="price">Price
+            <a 
+                href = "products?sort=price&Board=asc&query =${param.query}">asc
+            </a>
+            <a 
+                href = "products?sort=price&Board=desc&query =${param.query}">desc
+            </a>
         </td>
       </tr>
     </thead>
@@ -31,7 +41,10 @@
         </td>
         <td> <a href = "products/description?prod=${product.id}">${product.description}</a></td>
         <td class="price">
-          <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
+            <a 
+               href = ""  onclick = "window.open('products/popup?product=${product.id}', '_blank', 'width = 400,height = 400')"> 
+             <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
+            </a>
         </td>
       </tr>
     </c:forEach>

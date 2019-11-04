@@ -11,15 +11,17 @@ import java.io.IOException;
 public class ProductListPageServlet extends HttpServlet {
     
     public static ProductDao product;
+    private SortPrice price;
+    private SortField field;
     
     public ProductListPageServlet() {
         this.product = ArrayListProductDao.getInstance();
+        this.field = SortField.no;
+        this.price = SortPrice.no;
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SortPrice price = SortPrice.no;
-        SortField field = SortField.no;
         if(request.getParameter("sort")!=null){
             String board = request.getParameter("Board");
             if(request.getParameter("sort").equals("description")){
@@ -29,8 +31,14 @@ public class ProductListPageServlet extends HttpServlet {
                 price = SortPrice.valueOf(board);
             }
         }
-        request.setAttribute("products",product.findProducts(request.getParameter("query"), field, price));
-        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        String search = request.getParameter("query");
+        request.setAttribute("products",product.findProducts(search, field, price));
+        if(product.findProducts(search, field, price).isEmpty()){
+            request.getRequestDispatcher("/WEB-INF/pages/productCan'tBeFound.jsp").forward(request, response);
+        }
+        else{
+            request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        }
     }
 }
 

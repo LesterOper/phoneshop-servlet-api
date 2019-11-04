@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class ProductDetailsServlet extends HttpServlet{
-    
+public class PopupServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setAttribute("products",
-                product.getProduct(Long.parseLong(request.getParameter("prod"))));
-        request.getRequestDispatcher("/WEB-INF/pages/productDescription.jsp").
+                product.getProduct(Long.parseLong(request.getParameter("product"))));
+        request.getRequestDispatcher("/WEB-INF/pages/popup.jsp").
                 forward(request, response);
     }
 }

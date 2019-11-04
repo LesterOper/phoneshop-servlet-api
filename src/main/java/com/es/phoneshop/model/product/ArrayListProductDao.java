@@ -1,16 +1,16 @@
 package com.es.phoneshop.model.product;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
    
     private List<Product> result;
     private static ProductDao instance = new ArrayListProductDao();
-    
-    
     
     private ArrayListProductDao(){
         this.result = new ArrayList<>();
@@ -52,11 +52,24 @@ public class ArrayListProductDao implements ProductDao {
     
     @Override
     public List<Product> findProducts(String query, SortField field, SortPrice price) {
+        if(query!=null){
+            String[] search = query.toLowerCase().split(" ");
+            ToIntFunction<Product> matches = product->(int)Arrays.stream(search).
+                    filter(product.getDescription().toLowerCase()::contains).count();
+            
             return result.stream().
                 filter(x-> x.getPrice()!=null && x.getStock()>0).
-                filter(x-> query==null || x.getDescription().contains(query)).
+                filter(x-> Arrays.stream(search).
+                        anyMatch(x.getDescription().toLowerCase()::contains)).
+                sorted(Comparator.comparingInt(matches).reversed()).
+                collect(Collectors.toCollection(ArrayList::new));
+        }
+        else{
+            return result.stream()
+                .filter(x-> x.getPrice()!=null && x.getStock()>0).
                 sorted(getComparator(field, price)).
                 collect(Collectors.toCollection(ArrayList::new));
+        }
     }
 
     @Override
