@@ -1,6 +1,6 @@
 package com.es.phoneshop.model.product;
 
-import com.es.phoneshop.exception.ProductNotFound;
+import com.es.phoneshop.exception.ProductNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import java.math.*;
@@ -23,7 +23,7 @@ public class ArrayListProductDaoTest
         assertFalse(productDao.findProducts("", SortField.asc, SortPrice.desc).isEmpty());
     }
     
-    @Test(expected = ProductNotFound.class)
+    @Test(expected = ProductNotFoundException.class)
     public void testGetProduct(){
         assertNotNull(productDao.getProduct(1L));
     }

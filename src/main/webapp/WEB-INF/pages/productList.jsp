@@ -32,7 +32,7 @@
           <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
         </td>
         <td> 
-            <a href = "products/description/${product.id}">${product.description}</a></td>
+            <a href = "products/${product.id}">${product.description}</a></td>
         <td class="price">
             <a 
                href = ""onclick = "window.open('products/popup?product=${product.id}', '_blank', 'width = 400,height = 400')"> 
