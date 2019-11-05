@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.exception.ProductNotFound;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -43,11 +44,11 @@ public class ArrayListProductDao implements ProductDao {
     }
     
     @Override
-    public Product getProduct(Long id) {
-        return result.stream().
+    public Product getProduct(Long id) throws ProductNotFound {
+         return result.stream().
                 filter(x-> x.getId()!=null && x.getId().equals(id)).
                 findFirst().
-                orElseThrow(IllegalArgumentException::new);
+                orElseThrow(()->new ProductNotFound("Such product doesn't exist", id));
     }
     
     @Override

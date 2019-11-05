@@ -1,3 +1,5 @@
+<%@page import="com.es.phoneshop.model.product.ProductDao"%>
+<%@page import="com.es.phoneshop.model.product.ArrayListProductDao"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,7 +14,7 @@
     Phone's description
   </p>
   <table>
-    <thead>
+    <thead> 
       <tr>
         <td>Image</td>
         <td>Description</td>

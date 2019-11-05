@@ -32,6 +32,7 @@ public class ProductListPageServlet extends HttpServlet {
             }
         }
         String search = request.getParameter("query");
+        
         request.setAttribute("products",product.findProducts(search, field, price));
         if(product.findProducts(search, field, price).isEmpty()){
             request.getRequestDispatcher("/WEB-INF/pages/productCan'tBeFound.jsp").forward(request, response);

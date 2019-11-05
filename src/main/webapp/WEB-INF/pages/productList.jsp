@@ -17,20 +17,12 @@
       <tr>
         <td>Image</td>
         <td class ="description">Description 
-            <a 
-                href ="products?sort=description&Board=asc&query =${param.query}">asc
-            </a>
-            <a 
-                href ="products?sort=description&Board=desc&query =${param.query}">desc
-            </a> 
+            <a href ="products?sort=description&Board=asc&query =${param.query}">asc</a>
+            <a href ="products?sort=description&Board=desc&query =${param.query}">desc</a> 
         </td>
         <td class="price">Price
-            <a 
-                href = "products?sort=price&Board=asc&query =${param.query}">asc
-            </a>
-            <a 
-                href = "products?sort=price&Board=desc&query =${param.query}">desc
-            </a>
+            <a href = "products?sort=price&Board=asc&query =${param.query}">asc</a>
+            <a href="products?sort=price&Board=desc&query =${param.query}">desc</a>
         </td>
       </tr>
     </thead>
@@ -39,10 +31,11 @@
         <td>
           <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
         </td>
-        <td> <a href = "products/description?prod=${product.id}">${product.description}</a></td>
+        <td> 
+            <a href = "products/description/${product.id}">${product.description}</a></td>
         <td class="price">
             <a 
-               href = ""  onclick = "window.open('products/popup?product=${product.id}', '_blank', 'width = 400,height = 400')"> 
+               href = ""onclick = "window.open('products/popup?product=${product.id}', '_blank', 'width = 400,height = 400')"> 
              <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
             </a>
         </td>

@@ -36,7 +36,7 @@ public class ProductDetailsServletTest {
         
     }
     
-    @Test(expected = NumberFormatException.class)
+    @Test(expected = NullPointerException.class)
     public void testDoGet() throws ServletException, IOException{
         servlet.doGet(request, response);
         verify(requestDispatcher).forward(request, response);
