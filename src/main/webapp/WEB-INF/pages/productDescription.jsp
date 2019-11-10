@@ -6,6 +6,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="products" type="com.es.phoneshop.model.product.Product" scope="request"/>
+<jsp:useBean id="cartList" type ="com.es.phoneshop.Cart.CartList" scope="request"/>
 <tags:master pageTitle="Product List">
   <p>
     Welcome to Expert-Soft training!
@@ -33,4 +34,9 @@
         </td>
       </tr>
   </table>
+        <form method = "post" >
+              <input type ="cart" name ="quontity">
+              <button>Add to cart</button>
+        </form>   
+          ${cartList.list}
 </tags:master>
