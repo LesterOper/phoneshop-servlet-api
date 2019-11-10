@@ -31,7 +31,7 @@ public class HttpSessionCartService implements Cart{
     
     @Override
     public CartList getCart(HttpServletRequest request) {
-        if(request.getSession()==null){
+        if(request.getSession().getAttribute("cartList")==null){
             cart = new CartList();
             request.getSession().setAttribute("cartList", cart);
         }
