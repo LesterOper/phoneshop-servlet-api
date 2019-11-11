@@ -6,13 +6,17 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="products" type="com.es.phoneshop.model.product.Product" scope="request"/>
-<jsp:useBean id="cartList" type ="com.es.phoneshop.Cart.CartList" scope="request"/>
 <tags:master pageTitle="Product List">
   <p>
     Welcome to Expert-Soft training!
   </p>
   <p>
     Phone's description
+  </p>
+  <p>
+    <c:if test="${error!=null}">
+        <font color ="red"> <c:out value="You enter smth wrong"/></font>
+     </c:if>
   </p>
   <table>
     <thead> 
@@ -35,8 +39,23 @@
       </tr>
   </table>
         <form method = "post" >
-              <input type ="cart" name ="quontity">
+              <input type ="cart" name ="${not empty param.quontity ? param.quontity : 1}">
               <button>Add to cart</button>
         </form>   
-          ${cartList.list}
+        <c:if test="${error!=null}">
+            <p><font color="red"><c:out value ="${error}"/></font></p>
+        </c:if>
+        <c:if test="${error==null}">
+        <p>
+            <font color="green">
+            <c:out value ="${param.message}"/>
+            </font>
+        </p>
+        </c:if>
+        <c:set var="list" value="${sessionScope['cartList'].list}"/>
+        <c:if test="${list!=null}">
+            <c:forEach items="${list}" var="cart" >
+                <p><c:out value="${cart}"/></p>
+            </c:forEach>
+        </c:if>      
 </tags:master>

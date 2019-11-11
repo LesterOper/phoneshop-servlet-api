@@ -1,9 +1,7 @@
-
 package com.es.phoneshop.Cart;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class CartList {
     private List<CartItem> cart;

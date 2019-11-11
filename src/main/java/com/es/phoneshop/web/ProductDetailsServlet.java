@@ -1,15 +1,16 @@
-
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.Cart.*;
-//import com.es.phoneshop.Cart.HttpSessionCartService;
+import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.ProductDao;
 import static com.es.phoneshop.web.ProductListPageServlet.product;
 import java.io.IOException;
-import java.util.List;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.objects.Global;
 
 
 
@@ -20,27 +21,46 @@ public class ProductDetailsServlet extends HttpServlet{
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        //showPage(request, response, cartList);
-        request.setAttribute("products",
-                    product.getProduct(Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1))));
-        request.setAttribute("cartList", cartList);
-        request.getRequestDispatcher("/WEB-INF/pages/productDescription.jsp").
-                forward(request, response);
+        showPage(request, response); 
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        Long id = Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1));
-        int quontity = Integer.parseInt(request.getParameter("quontity"));
-        cartList = cartService.getCart(request);
-        cartList = cartService.addProduct(cartList, product.getProduct(id), quontity);
-        showPage(request, response, cartList);
+        String error = "";
+        String message = "";
+        try{
+            Long id = Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1));
+            int quontity = Integer.parseInt(request.getParameter("quontity"));
+            ProductDao product = ArrayListProductDao.getInstance();
+            if(product.getProduct(id).getStock()<quontity){
+                throw new IllegalArgumentException();
+            }
+            
+            cartList = cartService.getCart(request);
+            cartService.addProduct(cartList, product.getProduct(id), quontity);
+            cartList =(CartList) request.getSession().getAttribute("cartList");
+            message = "Added succesful";
+        }
+        catch(NumberFormatException e){
+            error = "Quontity is not a number";
+        }
+        catch(IllegalArgumentException e){
+            error = "Not enough stock";
+        }
+        
+        if(!error.isEmpty()){
+            request.setAttribute("error", error);
+            showPage(request, response);
+            return;
+        }
+        else{
+            response.sendRedirect(request.getRequestURI() + "?message="+message);
+        }
     }
     
-    public void showPage(HttpServletRequest request, HttpServletResponse response, CartList cart) throws ServletException, IOException{
+    public void showPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setAttribute("products",
                     product.getProduct(Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1))));
-        request.setAttribute("cartList", cartList);
         request.getRequestDispatcher("/WEB-INF/pages/productDescription.jsp").
                 forward(request, response);
     }
