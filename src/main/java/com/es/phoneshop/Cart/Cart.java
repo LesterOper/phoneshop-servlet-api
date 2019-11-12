@@ -1,9 +1,16 @@
 package com.es.phoneshop.Cart;
 
-import com.es.phoneshop.model.product.Product;
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
-public interface Cart {
-    CartList getCart(HttpServletRequest request);
-    void addProduct(CartList cart, Product product, int quontity); 
+public class Cart {
+    private List<CartItem> cart;
+    
+    public Cart(){
+        cart = new ArrayList<>();
+    }
+    
+    public List<CartItem> getList(){
+        return cart;
+    }
 }

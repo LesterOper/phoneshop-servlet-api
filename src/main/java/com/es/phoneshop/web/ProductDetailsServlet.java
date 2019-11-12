@@ -5,19 +5,19 @@ import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.ProductDao;
 import static com.es.phoneshop.web.ProductListPageServlet.product;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jdk.nashorn.internal.objects.Global;
-
-
 
 public class ProductDetailsServlet extends HttpServlet{
-    
-    private Cart cartService = HttpSessionCartService.getInstance();
-    private CartList cartList = new CartList();
+    private static final String QUANTITY = "quantity";
+    private CartService cartService = HttpSessionCartServiceService.getInstance();
+    private Cart cartList = new Cart();
+    private RecentlyViewedItems viewedItems;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -28,21 +28,27 @@ public class ProductDetailsServlet extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String error = "";
         String message = "";
+        int quantity=1;
         try{
             Long id = Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1));
-            int quontity = Integer.parseInt(request.getParameter("quontity"));
+            quantity = Integer.parseInt(request.getParameter(QUANTITY));
             ProductDao product = ArrayListProductDao.getInstance();
-            if(product.getProduct(id).getStock()<quontity){
+            if(product.getProduct(id).getStock() < quantity){
                 throw new IllegalArgumentException();
             }
             
             cartList = cartService.getCart(request);
-            cartService.addProduct(cartList, product.getProduct(id), quontity);
-            cartList =(CartList) request.getSession().getAttribute("cartList");
-            message = "Added succesful";
+            cartService.addProduct(cartList, product.getProduct(id), quantity);
+            message = "Added successfully";
+
+            viewedItems = cartService.getViewedItems(request);
+            if(viewedItems.getLength()<3 &&
+                    !viewedItems.isContainsProduct(product.getProduct(id))){
+                viewedItems.addToRecentlyViewed(product.getProduct(id));
+            }
         }
         catch(NumberFormatException e){
-            error = "Quontity is not a number";
+            error = "Quantity is not a number";
         }
         catch(IllegalArgumentException e){
             error = "Not enough stock";
@@ -50,6 +56,12 @@ public class ProductDetailsServlet extends HttpServlet{
         
         if(!error.isEmpty()){
             request.setAttribute("error", error);
+            try {
+                request.setAttribute(QUANTITY, getLocale(request,Integer.toString(quantity)));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
             showPage(request, response);
             return;
         }
@@ -63,5 +75,10 @@ public class ProductDetailsServlet extends HttpServlet{
                     product.getProduct(Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1))));
         request.getRequestDispatcher("/WEB-INF/pages/productDescription.jsp").
                 forward(request, response);
+    }
+
+    private int getLocale(HttpServletRequest request, String quantity) throws ParseException {
+        Locale locale = request.getLocale();
+        return NumberFormat.getIntegerInstance(locale).parse(quantity).intValue();
     }
 }
