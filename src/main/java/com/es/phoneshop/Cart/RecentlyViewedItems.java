@@ -8,23 +8,23 @@ import java.util.List;
 public class RecentlyViewedItems {
     private List<Product> recentlyViewed;
 
-    public RecentlyViewedItems(){
+    public RecentlyViewedItems() {
         recentlyViewed = new ArrayList<>();
     }
 
-    public boolean isContainsProduct(Product product){
+    public boolean isContainsProduct(Product product) {
         return recentlyViewed.contains(product);
     }
 
-    public void addToRecentlyViewed(Product product){
+    public void addToRecentlyViewed(Product product) {
         recentlyViewed.add(product);
     }
 
-    public int getLength(){
+    public int getLength() {
         return recentlyViewed.size();
     }
 
-    public List<Product> getList(){
+    public List<Product> getList() {
         return recentlyViewed;
     }
 }

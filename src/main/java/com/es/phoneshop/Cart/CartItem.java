@@ -9,21 +9,21 @@ public class CartItem {
     private int quantity;
     private int totalQuantity = 0;
     private int totalCost = 0;
-    
-    public CartItem (Product product, int quantity){
+
+    public CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
-    
-    public int getQuantity(){
+
+    public int getQuantity() {
         return this.quantity;
     }
-    
-    public void setQuantity(int quantity){
+
+    public void setQuantity(int quantity) {
         this.quantity += quantity;
     }
-    
-    public Product getProduct(){
+
+    public Product getProduct() {
         return product;
     }
 }

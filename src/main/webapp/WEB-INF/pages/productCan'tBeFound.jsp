@@ -5,11 +5,11 @@
 
 <jsp:useBean id="products" type="java.util.ArrayList" scope="request"/>
 <tags:master pageTitle="Product List">
-  <p>
-    Welcome to Expert-Soft training!
-  </p>
-  <p>
-    Such product with code "${param.query}" can't be found
-  </p>
-  
+    <p>
+        Welcome to Expert-Soft training!
+    </p>
+    <p>
+        Such product with code "${param.query}" can't be found
+    </p>
+
 </tags:master>
