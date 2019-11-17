@@ -1,6 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.Cart.*;
+import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.ProductDao;
 
@@ -50,7 +51,7 @@ public class ProductDetailsServlet extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             error = "Quantity is not a number";
-        } catch (IllegalArgumentException e) {
+        } catch (NotEnoughStockException e) {
             error = "Not enough stock";
         }
 

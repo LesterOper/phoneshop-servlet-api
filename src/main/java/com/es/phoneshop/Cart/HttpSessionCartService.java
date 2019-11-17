@@ -1,5 +1,6 @@
 package com.es.phoneshop.Cart;
 
+import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,13 +47,17 @@ public class HttpSessionCartService implements CartService {
             cartList.getList().stream()
                     .filter(prod -> prod.getProduct().getId().equals(product.getId()))
                     .findFirst()
-                    .get()
-                    .setQuantity(quantity);
+                    .ifPresent(item -> item.setQuantity(item.getQuantity() + quantity, product.getPrice()));
+            cartList.setTotalCartCost(cartList.getList());
         } else if (cartList.getList().stream()
                 .noneMatch(prod -> prod.getProduct().getId().equals(product.getId()))) {
             cartList.getList().add(new CartItem(product, quantity));
+            cartList.getList().stream().filter(prod -> prod.getProduct().getId().equals(product.getId()))
+                    .findFirst()
+                    .get().setTotalCost(product.getPrice(), quantity);
+            cartList.setTotalCartCost(cartList.getList());
         } else {
-            throw new IllegalArgumentException();
+            throw new NotEnoughStockException();
         }
     }
 
@@ -67,6 +72,20 @@ public class HttpSessionCartService implements CartService {
         } else {
             items = (RecentlyViewedItems) session.getAttribute(VIEWED_ITEMS);
             return items;
+        }
+    }
+
+    @Override
+    public void updateCart(Cart cart, Product product, int quantity) {
+        if (cart.getList().stream()
+                .anyMatch(prod -> prod.getProduct().getId().equals(product.getId())
+                        && quantity <= product.getStock())) {
+            cart.getList().stream()
+                    .filter(prod -> prod.getProduct().getId().equals(product.getId()))
+                    .findFirst().ifPresent(item -> item.setQuantity(quantity, product.getPrice()));
+            cart.setTotalCartCost(cart.getList());
+        } else {
+            throw new NotEnoughStockException();
         }
     }
 }

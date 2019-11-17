@@ -3,6 +3,7 @@ package com.es.phoneshop.Session;
 import com.es.phoneshop.Cart.Cart;
 import com.es.phoneshop.Cart.CartService;
 import com.es.phoneshop.Cart.HttpSessionCartService;
+import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
@@ -24,7 +25,7 @@ public class HttpSessionCartServiceTest {
         product = ArrayListProductDao.getInstance();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NotEnoughStockException.class)
     public void testAddProductToCart() {
         Currency usd = Currency.getInstance("USD");
         Cart cart = new Cart();
