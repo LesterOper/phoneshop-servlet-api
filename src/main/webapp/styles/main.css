@@ -32,3 +32,11 @@ img.product-tile {
 body.product-list {
 
 }
+
+span.errorMess {
+  color: red;
+}
+
+span.successMess {
+  color: green;
+}

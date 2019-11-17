@@ -1,6 +1,4 @@
-
 package com.es.phoneshop.web;
-
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +16,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDetailsServletTest {
     @Mock
@@ -29,15 +26,21 @@ public class ProductDetailsServletTest {
     private RequestDispatcher requestDispatcher;
 
     private ProductDetailsServlet servlet = new ProductDetailsServlet();
-    
+
     @Before
-    public  void setup(){
+    public void setup() {
         lenient().when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        
+
     }
-    
+
     @Test(expected = NullPointerException.class)
-    public void testDoGet() throws ServletException, IOException{
+    public void testDoGet() throws ServletException, IOException {
+        servlet.doGet(request, response);
+        verify(requestDispatcher).forward(request, response);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDoPost() throws ServletException, IOException {
         servlet.doGet(request, response);
         verify(requestDispatcher).forward(request, response);
     }
