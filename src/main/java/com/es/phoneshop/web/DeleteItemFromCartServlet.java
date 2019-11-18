@@ -6,7 +6,6 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Iterator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +18,13 @@ public class DeleteItemFromCartServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long productId = Long.parseLong(request.getParameter("productId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
         cart = cartService.getCart(request);
         productDao = ArrayListProductDao.getInstance();
         Product product = productDao.getProduct(productId);
         Iterator<CartItem> cartItem = cart.getList().iterator();
         while (cartItem.hasNext()) {
             CartItem item = cartItem.next();
-            if (item.getProduct().getId() == product.getId()) {
-                BigDecimal cost = item.getTotalCost();
+            if (item.getProduct().getId().equals(product.getId())) {
                 cartItem.remove();
                 cart.setTotalCartCost(cart.getList());
             }

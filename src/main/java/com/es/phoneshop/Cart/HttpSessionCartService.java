@@ -5,6 +5,8 @@ import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class HttpSessionCartService implements CartService {
 
@@ -41,24 +43,24 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addProduct(Cart cartList, Product product, int quantity) {
+        Supplier<Stream<CartItem>> addingStream = () -> cartList.getList().stream()
+                .filter(prod -> prod.getProduct().getId().equals(product.getId()));
         if (cartList.getList().stream()
                 .anyMatch(prod -> prod.getProduct().getId().equals(product.getId())
                         && prod.getQuantity() + quantity <= product.getStock())) {
-            cartList.getList().stream()
-                    .filter(prod -> prod.getProduct().getId().equals(product.getId()))
+            addingStream.get()
                     .findFirst()
                     .ifPresent(item -> item.setQuantity(item.getQuantity() + quantity, product.getPrice()));
-            cartList.setTotalCartCost(cartList.getList());
         } else if (cartList.getList().stream()
                 .noneMatch(prod -> prod.getProduct().getId().equals(product.getId()))) {
             cartList.getList().add(new CartItem(product, quantity));
-            cartList.getList().stream().filter(prod -> prod.getProduct().getId().equals(product.getId()))
+            addingStream.get()
                     .findFirst()
                     .get().setTotalCost(product.getPrice(), quantity);
-            cartList.setTotalCartCost(cartList.getList());
         } else {
             throw new NotEnoughStockException();
         }
+        cartList.setTotalCartCost(cartList.getList());
     }
 
     @Override

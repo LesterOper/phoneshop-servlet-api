@@ -7,10 +7,7 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 
 import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CartPageServlet extends HttpServlet {
-    private static final String QUANTITY = "quantity";
     private CartService cartService = HttpSessionCartService.getInstance();
     private Cart cartList = new Cart();
 
@@ -32,7 +28,6 @@ public class CartPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String[] quantity = request.getParameterValues("quantity");
         String[] productId = request.getParameterValues("productId");
-        String error = "";
         ProductDao productDao = ArrayListProductDao.getInstance();
         Product product = null;
         cartList = cartService.getCart(request);
@@ -60,14 +55,7 @@ public class CartPageServlet extends HttpServlet {
     }
 
     public void showPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //request.setAttribute("products",
-        //      product.getProduct(Long.parseLong(request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/") + 1))));
         request.getRequestDispatcher("/WEB-INF/pages/cartPage.jsp").
                 forward(request, response);
-    }
-
-    private int getLocale(HttpServletRequest request, String quantity) throws ParseException {
-        Locale locale = request.getLocale();
-        return NumberFormat.getIntegerInstance(locale).parse(quantity).intValue();
     }
 }
