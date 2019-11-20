@@ -1,9 +1,12 @@
 package com.es.phoneshop.Cart;
 
+import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class HttpSessionCartService implements CartService {
 
@@ -40,20 +43,24 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addProduct(Cart cartList, Product product, int quantity) {
+        Supplier<Stream<CartItem>> addingStream = () -> cartList.getList().stream()
+                .filter(prod -> prod.getProduct().getId().equals(product.getId()));
         if (cartList.getList().stream()
                 .anyMatch(prod -> prod.getProduct().getId().equals(product.getId())
                         && prod.getQuantity() + quantity <= product.getStock())) {
-            cartList.getList().stream()
-                    .filter(prod -> prod.getProduct().getId().equals(product.getId()))
+            addingStream.get()
                     .findFirst()
-                    .get()
-                    .setQuantity(quantity);
+                    .ifPresent(item -> item.setQuantity(item.getQuantity() + quantity, product.getPrice()));
         } else if (cartList.getList().stream()
                 .noneMatch(prod -> prod.getProduct().getId().equals(product.getId()))) {
             cartList.getList().add(new CartItem(product, quantity));
+            addingStream.get()
+                    .findFirst()
+                    .get().setTotalCost(product.getPrice(), quantity);
         } else {
-            throw new IllegalArgumentException();
+            throw new NotEnoughStockException();
         }
+        cartList.setTotalCartCost(cartList.getList());
     }
 
     @Override
@@ -67,6 +74,20 @@ public class HttpSessionCartService implements CartService {
         } else {
             items = (RecentlyViewedItems) session.getAttribute(VIEWED_ITEMS);
             return items;
+        }
+    }
+
+    @Override
+    public void updateCart(Cart cart, Product product, int quantity) {
+        if (cart.getList().stream()
+                .anyMatch(prod -> prod.getProduct().getId().equals(product.getId())
+                        && quantity <= product.getStock())) {
+            cart.getList().stream()
+                    .filter(prod -> prod.getProduct().getId().equals(product.getId()))
+                    .findFirst().ifPresent(item -> item.setQuantity(quantity, product.getPrice()));
+            cart.setTotalCartCost(cart.getList());
+        } else {
+            throw new NotEnoughStockException();
         }
     }
 }

@@ -67,6 +67,7 @@
             <p>
                 <c:out value="${item}"/>
                 <c:out value="Quantity: ${item.quantity}"/>
+                <c:out value="TotalCost: ${item.totalCost}"/>
             </p>
         </c:forEach>
     </c:if>
