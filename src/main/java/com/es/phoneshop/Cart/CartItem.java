@@ -9,13 +9,18 @@ import java.math.BigDecimal;
 public class CartItem {
     private Product product;
     private int quantity;
-    private int totalQuantity = 0;
     private BigDecimal totalCost;
 
     public CartItem(Product product, int quantity) {
         this.product = product;
         setQuantity(quantity, product.getPrice());
         this.totalCost = product.getPrice();
+    }
+
+    public CartItem(CartItem cartItem){
+        this.product = cartItem.product;
+        this.quantity = cartItem.getQuantity();
+        this.totalCost = cartItem.getTotalCost();
     }
 
     public int getQuantity() {

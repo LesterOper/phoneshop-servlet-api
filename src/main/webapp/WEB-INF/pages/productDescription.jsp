@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous">
 
 <jsp:useBean id="products" type="com.es.phoneshop.model.product.Product" scope="request"/>
 <tags:master pageTitle="Product List">
@@ -18,13 +21,13 @@
             </span>
         </c:if>
     </p>
-    <table>
-        <thead>
+    <table class="table table-boarded">
+        <thead class="thead-dark thead-boarded">
         <tr>
-            <td>Image</td>
-            <td>Description</td>
-            <td>Stock</td>
-            <td>Price</td>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Price</th>
         </tr>
         </thead>
         <tr>
@@ -41,9 +44,9 @@
         </tr>
     </table>
     <form method="post">
-        <label>Quantity</label><input type="text" name="quantity"
+        <label class="font-weight-bold">Quantity</label><input class="form-control" type="text" name="quantity"
                                       value="${not empty param.quantity ? param.quantity : 1}">
-        <button>Add to cart</button>
+        <button type="submit" class="btn btn-primary">Add to cart</button>
     </form>
 
     <c:choose>
@@ -73,18 +76,20 @@
     </c:if>
 
     <c:if test="${list!=null}">
-        <c:forEach items="${list}" var="view">
-            <table>
-                <td>
-                    <img class="product-tile"
-                         src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${view.imageUrl}">
-                    <a href="products/${view.id}">${view.description}</a>
-                    <p class="price">
-                        <fmt:formatNumber value="${view.price}" type="currency"
-                                          currencySymbol="${view.currency.symbol}"/>
-                    </p>
-                </td>
-            </table>
-        </c:forEach>
+        <table class="table-boarded">
+            <tr>
+                <c:forEach items="${list}" var="view">
+                    <td>
+                        <img class="product-tile"
+                             src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${view.imageUrl}">
+                        <a href="products/${view.id}">${view.description}</a>
+                        <p class="price">
+                            <fmt:formatNumber value="${view.price}" type="currency"
+                                              currencySymbol="${view.currency.symbol}"/>
+                        </p>
+                    </td>
+                </c:forEach>
+            </tr>
+        </table>
     </c:if>
 </tags:master>

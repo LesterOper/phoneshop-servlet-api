@@ -4,35 +4,31 @@ import com.es.phoneshop.Cart.Cart;
 import com.es.phoneshop.Cart.CartService;
 import com.es.phoneshop.Cart.HttpSessionCartService;
 import com.es.phoneshop.exception.NotEnoughStockException;
-import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.Currency;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 public class HttpSessionCartServiceTest {
     private CartService cartService;
-    private ProductDao product;
+    private Cart cart;
 
     @Before
     public void setup() {
         cartService = HttpSessionCartService.getInstance();
-        product = ArrayListProductDao.getInstance();
+        cart = new Cart();
     }
 
     @Test(expected = NotEnoughStockException.class)
-    public void testAddProductToCart() {
+    public void testUpdateCart() {
         Currency usd = Currency.getInstance("USD");
-        Cart cart = new Cart();
         Product item = new Product(4L, "iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone.jpg");
-        int quantity = 3;
-        cartService.addProduct(cart, item, quantity);
-        cartService.addProduct(cart, item, quantity + 6);
-        assertNotNull(cart.getList());
+        Cart cart1 = this.cart;
+        cartService.updateCart(cart, item, 11);
+        assertNotEquals(this.cart, cart1);
     }
 }

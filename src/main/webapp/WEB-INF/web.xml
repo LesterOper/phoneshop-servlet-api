@@ -68,4 +68,34 @@
     <url-pattern>/products/cart/deleteItem</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>CheckoutServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.CheckoutPageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>CheckoutServlet</servlet-name>
+    <url-pattern>/products/cart/checkout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>OrderView</servlet-name>
+    <servlet-class>com.es.phoneshop.web.OrderOverViewServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>OrderView</servlet-name>
+    <url-pattern>/overview/*</url-pattern>
+  </servlet-mapping>
+
+    <filter>
+        <filter-name>dosProtection</filter-name>
+        <filter-class>com.es.phoneshop.web.filter.DosFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>dosProtection</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
