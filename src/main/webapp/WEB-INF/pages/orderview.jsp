@@ -77,6 +77,7 @@
             <th>Phone</th>
             <th>Date</th>
             <th>Address</th>
+            <th>Deliver</th>
         </tr>
         </thead>
         <tbody>
@@ -92,6 +93,9 @@
             </td>
             <td>
                     ${requestScope["order"].address}
+            </td>
+            <td>
+                    ${requestScope["order"].howToDeliver}
             </td>
         </tr>
         </tbody>

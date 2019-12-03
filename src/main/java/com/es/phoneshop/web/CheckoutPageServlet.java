@@ -42,6 +42,7 @@ public class CheckoutPageServlet extends HttpServlet {
         String phone = checkFields(request, "phone",errorMap);
         String date = checkFields(request,"date" ,errorMap);
         String address = checkFields(request, "address",errorMap);
+        String delivery = request.getParameter("deliver");
 
         if(!errorMap.isEmpty()) {
             request.setAttribute(ORDER, order);
@@ -54,6 +55,7 @@ public class CheckoutPageServlet extends HttpServlet {
         order.setPhone(phone);
         order.setDate(date);
         order.setAddress(address);
+        order.setHowToDeliver(delivery);
         String secureId = orderService.placeOrder(order);
         cart.getList().clear();
         cart.setTotalCartCost(cart.getList(), new BigDecimal("0"));

@@ -74,6 +74,11 @@
         <tags:Input label="Phone" name="phone" errorMap="${requestScope['error']}"/>
         <tags:Input label="Date" name="date" errorMap="${requestScope['error']}"/>
         <tags:Input label="Address" name="address" errorMap="${requestScope['error']}"/>
+        <select name="deliver" size="1">
+            <option selected>Money</option>
+            <option>Cart</option>
+            <option>PickUp</option>
+        </select>
         <button>
             ADD
         </button>

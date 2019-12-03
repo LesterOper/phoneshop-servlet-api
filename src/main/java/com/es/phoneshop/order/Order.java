@@ -16,6 +16,7 @@ public class Order extends Cart {
     private String phone;
     private String date;
     private String address;
+    private String howToDeliver;
 
     public Order(List<CartItem> cartItems){
         super(cartItems);
@@ -75,5 +76,13 @@ public class Order extends Cart {
 
     public String getSecureId() {
         return this.secureId;
+    }
+
+    public String getHowToDeliver() {
+        return howToDeliver;
+    }
+
+    public void setHowToDeliver(String howToDeliver) {
+        this.howToDeliver = howToDeliver;
     }
 }
