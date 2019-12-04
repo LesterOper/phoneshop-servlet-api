@@ -1,6 +1,9 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.Cart.*;
+import com.es.phoneshop.comments.ArrayListCommentDAO;
+import com.es.phoneshop.comments.Comment;
+import com.es.phoneshop.comments.CommentDao;
 import com.es.phoneshop.exception.NotEnoughStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.ProductDao;
@@ -10,6 +13,7 @@ import static com.es.phoneshop.web.ProductListPageServlet.product;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,9 +25,14 @@ public class ProductDetailsServlet extends HttpServlet {
     private CartService cartService = HttpSessionCartService.getInstance();
     private Cart cartList = new Cart();
     private RecentlyViewedItems viewedItems;
+    private CommentDao commentDao = ArrayListCommentDAO.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Comment> comments = commentDao.getCommentById(Long.parseLong(
+                request.getRequestURI()
+                        .substring(request.getRequestURI().lastIndexOf("/") + 1)));
+        request.setAttribute("comm", comments);
         showPage(request, response);
     }
 

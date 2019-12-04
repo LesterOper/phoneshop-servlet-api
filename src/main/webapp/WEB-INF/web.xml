@@ -88,6 +88,16 @@
     <url-pattern>/overview/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>Comment</servlet-name>
+    <servlet-class>com.es.phoneshop.web.GetCommentServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Comment</servlet-name>
+    <url-pattern>/comment</url-pattern>
+  </servlet-mapping>
+
     <filter>
         <filter-name>dosProtection</filter-name>
         <filter-class>com.es.phoneshop.web.filter.DosFilter</filter-class>
@@ -97,5 +107,9 @@
         <filter-name>dosProtection</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>Welcome.jsp</welcome-file>
+  </welcome-file-list>
 
 </web-app>

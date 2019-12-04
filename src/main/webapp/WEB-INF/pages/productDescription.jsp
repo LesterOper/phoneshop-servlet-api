@@ -92,4 +92,26 @@
             </tr>
         </table>
     </c:if>
+
+    <form method="post" action="${pageContext.servletContext.contextPath}/comment">
+        <label>
+            Name <span class="errorMess">*</span>
+            <input type="text" name="name">
+        </label>
+        <label>Rate, please
+            <select name="rate" size="1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <input type="hidden" name="product_id" value="${products.id}">
+            </select>
+        </label>
+        <label> Your comment
+            <input type="text" name="comment">
+        </label>
+        <button>ADD</button>
+    </form>
+
 </tags:master>
