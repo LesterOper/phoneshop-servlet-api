@@ -6,23 +6,40 @@ import java.util.List;
 
 public class Cart {
     private List<CartItem> cart;
-    private BigDecimal totalCartCost = new BigDecimal(0);
+    private BigDecimal totalCartCost;
+    private int totalCartQuantity;
 
     public Cart() {
         cart = new ArrayList<>();
+    }
+
+    protected Cart(List<CartItem> cartItems) {
+        this.cart = cartItems;
     }
 
     public List<CartItem> getList() {
         return cart;
     }
 
-    public void setTotalCartCost(List<CartItem> cartItems) {
+    public void setTotalCartCost(List<CartItem> cartItems, BigDecimal delivery) {
         totalCartCost = cartItems.stream()
                 .map(CartItem::getTotalCost)
-                .reduce(new BigDecimal("0"), (x, y) -> x.add(y));
+                .reduce(new BigDecimal("0"), BigDecimal::add);
+        this.totalCartCost = totalCartCost.add(delivery);
+
     }
 
     public BigDecimal getTotalCartCost() {
         return totalCartCost;
+    }
+
+    public void setTotalCartQuantity(List<CartItem> cartItems) {
+        totalCartQuantity = cartItems.stream()
+                .map(CartItem::getQuantity)
+                .reduce(totalCartQuantity, Integer::sum);
+    }
+
+    public int getTotalCartQuantity() {
+        return this.totalCartQuantity;
     }
 }

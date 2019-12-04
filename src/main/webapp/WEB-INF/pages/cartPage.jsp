@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous">
+
 
 <tags:master pageTitle="Product List">
     <p>
@@ -22,15 +26,16 @@
         </span>
     </c:if>
     <c:if test="${not empty cart}">
-        <table>
-            <thead>
+        <table class="table table-boarded">
+            <thead class="thead-dark">
             <tr>
-                <td>Image</td>
-                <td>Description</td>
-                <td>Quantity</td>
-                <td>Price</td>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Stock</th>
+                <th>Price</th>
             </tr>
             </thead>
+            <tbody>
             <c:set var="error" value="${requestScope['errors']}"/>
             <form id="deleteCartItem" action="${pageContext.servletContext.contextPath}/products/cart/deleteItem"
                   method="post">
@@ -44,7 +49,7 @@
                             ${cartItem.product.description}
                     </td>
                     <td>
-                        <input type="text" name="quantity" value="${not empty paramValues.quantity[status.index]
+                        <input class="form-control" type="text" name="quantity" value="${not empty paramValues.quantity[status.index]
                                                         ? paramValues.quantity[status.index]: cartItem.quantity}">
                         <input type="hidden" name="productId" value="${cartItem.product.id}">
                         <c:if test="${error[cartItem.product]!=null}">
@@ -63,8 +68,13 @@
                     </td>
                 </tr>
                 </c:forEach>
+            </tbody>
         </table>
         <button formaction="${pageContext.servletContext.contextPath}/products/cart">UPDATE</button>
+        </form>
+        <br>
+        <form action="${pageContext.servletContext.contextPath}/products/cart/checkout" method="get">
+            <button>Go to checkout</button>
         </form>
     </c:if>
 </tags:master>

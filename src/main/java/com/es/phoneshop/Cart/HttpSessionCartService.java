@@ -5,6 +5,7 @@ import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -43,6 +44,7 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addProduct(Cart cartList, Product product, int quantity) {
+        boolean flag = false;
         Supplier<Stream<CartItem>> addingStream = () -> cartList.getList().stream()
                 .filter(prod -> prod.getProduct().getId().equals(product.getId()));
         if (cartList.getList().stream()
@@ -51,16 +53,18 @@ public class HttpSessionCartService implements CartService {
             addingStream.get()
                     .findFirst()
                     .ifPresent(item -> item.setQuantity(item.getQuantity() + quantity, product.getPrice()));
+            flag = true;
         } else if (cartList.getList().stream()
                 .noneMatch(prod -> prod.getProduct().getId().equals(product.getId()))) {
             cartList.getList().add(new CartItem(product, quantity));
             addingStream.get()
                     .findFirst()
                     .get().setTotalCost(product.getPrice(), quantity);
-        } else {
+            flag = true;
+        } if(!flag) {
             throw new NotEnoughStockException();
         }
-        cartList.setTotalCartCost(cartList.getList());
+        cartList.setTotalCartCost(cartList.getList(), new BigDecimal("0"));
     }
 
     @Override
@@ -85,7 +89,7 @@ public class HttpSessionCartService implements CartService {
             cart.getList().stream()
                     .filter(prod -> prod.getProduct().getId().equals(product.getId()))
                     .findFirst().ifPresent(item -> item.setQuantity(quantity, product.getPrice()));
-            cart.setTotalCartCost(cart.getList());
+            cart.setTotalCartCost(cart.getList(), new BigDecimal("0"));
         } else {
             throw new NotEnoughStockException();
         }

@@ -23,16 +23,18 @@ public class HttpSessionCartServiceTest {
         cart = new Cart();
     }
 
-    @Test
+     @Test(expected = NotEnoughStockException.class) // TODO
     public void testAddProductToCart() {
         Currency usd = Currency.getInstance("USD");
         Product item1 = new Product(5L, "iphone6", "Apple iPhone 6", new BigDecimal(1000), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone%206.jpg");
         Product item = new Product(4L, "iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone.jpg");
         int quantity = 1;
         cartService.addProduct(this.cart, item, quantity);
+        int check = this.cart.getList().get(0).getQuantity();
         Cart cart1 = new Cart();
         cartService.addProduct(cart1, item1, 3);
         cartService.addProduct(cart, item, quantity);
+        cartService.addProduct(cart, item1, quantity + 3);
         assertNotEquals(cart, cart1);
     }
 

@@ -6,6 +6,7 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class DeleteItemFromCartServlet extends HttpServlet {
             CartItem item = cartItem.next();
             if (item.getProduct().getId().equals(product.getId())) {
                 cartItem.remove();
-                cart.setTotalCartCost(cart.getList());
+                cart.setTotalCartCost(cart.getList(), new BigDecimal("0"));
             }
         }
         response.sendRedirect(request.getContextPath() + "/products/cart");
